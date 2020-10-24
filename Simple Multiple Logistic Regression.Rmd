@@ -1,0 +1,40 @@
+---
+title: "Simple Multiple Logistic Regression"
+author: "19523016_Rio , 19523134_Khirana"
+date: "10/24/2020"
+output: html_document
+---
+
+```{r}
+library("readxl")
+library(ggplot2)
+library(predict3d)
+```
+
+```{r}
+data <- read.csv("databola.csv")
+head(data)
+```
+
+```{r}
+dt <- subset(data, select = c(Crossing, Finishing, Preferred_Foot))
+dt
+```
+
+```{r}
+fit <- glm(formula = Preferred_Foot~Crossing, data, family = binomial)
+summary(fit)
+```
+```{r}
+ggplot(dt, aes(x=Crossing, y=Preferred_Foot)) + geom_point() + 
+  stat_smooth(method = "glm", method.args = list(family="binomial"), se = FALSE)
+```
+
+```{r}
+fit2 <- glm(formula = Preferred_Foot~Crossing+Finishing, data, family = binomial)
+summary(fit2)
+```
+```{r}
+ggPredict(fit2)
+```
+
