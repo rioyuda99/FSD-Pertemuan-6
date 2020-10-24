@@ -1,0 +1,35 @@
+---
+title: "Multiple Linear Regression"
+author : "19523134_Khirana , 19523016_Rio"
+output: html_notebook
+---
+
+```{r}
+library(datasets)
+Data1<- read.csv("players_stats_by_season_full_details.csv")
+```
+
+```{r}
+str(Data1)
+```
+
+```{r}
+Data_use <- subset(Data1, select = c(GP,STL,height))
+Data_use
+```
+```{r}
+fit <- lm(GP~STL+height, data = Data1)
+summary(fit)
+```
+
+
+```{r}
+library(predict3d)
+```
+
+```{r}
+ggPredict(fit)
+```
+
+
+
