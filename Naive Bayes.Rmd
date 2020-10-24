@@ -1,0 +1,46 @@
+---
+title: "Naive Bayes"
+author: '19523134_Khirana , 19523016_Rio'
+date: "10/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(datasets)
+Data1 <- read.csv("train.csv")
+str(Data1)
+```
+```{r}
+head(Data1)
+```
+
+
+#fitting data
+```{r}
+library(e1071)
+Naive_Bayes_Model = naiveBayes(POSTED_BY ~.,data= Data1)
+Naive_Bayes_Model
+```
+#input new data   
+```{r}
+newData1 <- data.frame(POSTED= "Owner", BHK="BHK",ADDRESS="	Vishweshwara Nagar,Mysore")
+newData1
+```
+#predict new Data
+```{r}
+vector_prediction = predict(Naive_Bayes_Model, newData1, type = "raw")
+vp= vector_prediction
+vp
+```
+#Predict the new data(cont'd)
+```{r}
+yhat_status = colnames(vp)[max.col(vp,ties.method = "first")]
+sprintf("y_hat for the new data is'%s", yhat_status)
+newData1$POSTED <- yhat_status
+newData1
+```
+
