@@ -1,0 +1,48 @@
+---
+title: "Simple Linear Reg"
+author: '19523134_Khirana , 19523016_Rio'
+date: "10/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(datasets)
+Data1 <- read.csv("players_stats_by_season_full_details.csv")
+head(Data1)
+```
+
+```{r}
+View(Data1)
+```
+
+
+```{r}
+str(Data1)
+```
+
+#field goals made and field goals attempt
+```{r}
+Data_use <- subset(Data1, select = c(FGM, FGA))
+Data_use
+```
+#Simple Linear Regression
+```{r}
+fit <- lm(FGM ~ FGA, data = Data_use)
+summary(fit)
+```
+#import library predict3d
+```{r}
+library(predict3d)
+```
+
+```{r}
+ggPredict(fit)
+```
+```{r}
+ggPredict(fit, xpos = 0.5, vjust = 1, show.error = TRUE)
+```
+
