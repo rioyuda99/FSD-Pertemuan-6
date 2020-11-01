@@ -1,0 +1,81 @@
+---
+title: "Pertemuan 14 Fundamen Sains Data"
+author: "Rio Yuda Sakti"
+date: "11/1/2020"
+output: html_document
+---
+
+```{r}
+set.seed(10111)
+```
+
+```{r}
+x <- matrix(rnorm(60),30,2)
+x
+```
+```{r}
+y <- factor(rep(c(0,1), each=15))
+y
+```
+```{r}
+x[y == 1, ] <- x[y == 1, ] + 4
+x
+```
+```{r}
+myData <- data.frame(x,y)
+head(myData)
+```
+```{r}
+colnames(myData) <- c("Sembuh", "Sakit", "Pasien")
+head(myData)
+```
+
+```{r}
+plot(myData$Sembuh, myData$Sakit, col = ifelse(y=="1", "green", "red"), pch = 19)
+```
+
+```{r}
+library(e1071)
+```
+```{r}
+modelSVM1 <- svm(Pasien ~ ., data = myData, kernel="linear")
+print(modelSVM1)
+```
+```{r}
+plot(modelSVM1, myData)
+```
+
+```{r}
+library(caret)
+set.seed(132)
+```
+```{r}
+train_control <- trainControl(method = "cv", number=3)
+modelSVM2 <- train(Pasien ~., data = myData, method ="svmLinear", trControl = train_control)
+```
+
+```{r}
+modelSVM2$resample
+```
+
+```{r}
+confusionMatrix(modelSVM2)
+```
+```{r}
+train_control <- trainControl(method = "repeatedcv", number=3, repeats=5)
+modelSVM3 <- train(Pasien ~., method = "nb", trControl = train_control, data = myData) 
+
+modelSVM3$resample
+confusionMatrix(modelSVM3)
+```
+
+
+
+```{r}
+train_control <- trainControl(method = "LOOCV")
+modelSVM4 <- train(Pasien ~., data = myData, method = "svmLinear", trControl = train_control)
+
+modelSVM4$results
+```
+Proses underfitting dan overfitting tidak dapat dilakukan dikarenakan akurasi dari data training maupun
+data testing keduanya memiliki akurasi yang tinggi.
