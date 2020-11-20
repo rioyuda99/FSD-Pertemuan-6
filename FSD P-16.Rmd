@@ -1,0 +1,48 @@
+---
+title: "FSD P-16"
+author: "Rio Yuda Sakti & Khirana Dwicahyo"
+date: "11/20/2020"
+output: html_document
+---
+
+Memasukkan data set Wholesome Customers
+```{r}
+data <- read.csv(file = 'Wholesale.csv')
+summary(data)
+```
+```{r}
+data.new <- data[,3:8]
+data.class <- data[,"Region"]
+set.seed(1356)
+result <- kmeans(data.new,3)
+```
+
+```{r}
+par(mfrow=c(2,2), mar=c(5,4,2,2))
+plot(data.new[,c(1,3)], col=result$cluster)
+```
+```{r}
+plot(data.new[,c(1,3)], col=data.class)
+```
+```{r}
+plot(data.new[,c(2,4)], col=result$cluster)
+```
+```{r}
+plot(data.new[,c(2,4)],col=data.class)
+```
+```{r}
+result$tot.withinss
+```
+```{r}
+attributes(result)$names
+```
+```{r}
+data.new$cluster <- factor(result$cluster)
+centers <- as.data.frame(result$centers)
+library(ggplot2)
+ggplot() +
+  geom_point(data=data.new,aes(x=Fresh, y=Grocery, color=cluster)) +
+  geom_point(data=centers,aes(x=Fresh, y=Grocery,color="Center"),
+             size=52, alpha=.3, show.legend=FALSE)
+```
+
